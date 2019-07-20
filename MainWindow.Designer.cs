@@ -23,24 +23,14 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.selectAllCheckbox = new System.Windows.Forms.CheckBox();
             this.deleteSelBtn = new System.Windows.Forms.Button();
             this.moveUpBtn = new System.Windows.Forms.Button();
             this.moveDownBtn = new System.Windows.Forms.Button();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.revertBtn = new System.Windows.Forms.Button();
+            this.projNameLabel = new System.Windows.Forms.Label();
+            this.pathLabel = new System.Windows.Forms.Label();
+            this.projectList = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
-            // 
-            // selectAllCheckbox
-            // 
-            this.selectAllCheckbox.AutoSize = true;
-            this.selectAllCheckbox.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.selectAllCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(225)))), ((int)(((byte)(225)))));
-            this.selectAllCheckbox.Location = new System.Drawing.Point(12, 4);
-            this.selectAllCheckbox.Name = "selectAllCheckbox";
-            this.selectAllCheckbox.Size = new System.Drawing.Size(74, 19);
-            this.selectAllCheckbox.TabIndex = 2;
-            this.selectAllCheckbox.Text = "Select All";
-            this.selectAllCheckbox.UseVisualStyleBackColor = true;
             // 
             // deleteSelBtn
             // 
@@ -51,12 +41,13 @@
             this.deleteSelBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.deleteSelBtn.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.deleteSelBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
-            this.deleteSelBtn.Location = new System.Drawing.Point(12, 326);
+            this.deleteSelBtn.Location = new System.Drawing.Point(12, 404);
             this.deleteSelBtn.Name = "deleteSelBtn";
             this.deleteSelBtn.Size = new System.Drawing.Size(140, 25);
-            this.deleteSelBtn.TabIndex = 3;
+            this.deleteSelBtn.TabIndex = 1;
             this.deleteSelBtn.Text = "Delete Selected";
             this.deleteSelBtn.UseVisualStyleBackColor = true;
+            this.deleteSelBtn.Click += new System.EventHandler(this.DeleteSelBtn_Click);
             // 
             // moveUpBtn
             // 
@@ -67,12 +58,13 @@
             this.moveUpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.moveUpBtn.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.moveUpBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
-            this.moveUpBtn.Location = new System.Drawing.Point(158, 326);
+            this.moveUpBtn.Location = new System.Drawing.Point(158, 404);
             this.moveUpBtn.Name = "moveUpBtn";
             this.moveUpBtn.Size = new System.Drawing.Size(100, 25);
-            this.moveUpBtn.TabIndex = 4;
+            this.moveUpBtn.TabIndex = 2;
             this.moveUpBtn.Text = "Move Up";
             this.moveUpBtn.UseVisualStyleBackColor = true;
+            this.moveUpBtn.Click += new System.EventHandler(this.MoveUpBtn_Click);
             // 
             // moveDownBtn
             // 
@@ -83,45 +75,84 @@
             this.moveDownBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.moveDownBtn.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.moveDownBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
-            this.moveDownBtn.Location = new System.Drawing.Point(264, 326);
+            this.moveDownBtn.Location = new System.Drawing.Point(264, 404);
             this.moveDownBtn.Name = "moveDownBtn";
             this.moveDownBtn.Size = new System.Drawing.Size(100, 25);
-            this.moveDownBtn.TabIndex = 5;
+            this.moveDownBtn.TabIndex = 3;
             this.moveDownBtn.Text = "Move Down";
             this.moveDownBtn.UseVisualStyleBackColor = true;
+            this.moveDownBtn.Click += new System.EventHandler(this.MoveDownBtn_Click);
             // 
-            // listBox1
+            // revertBtn
             // 
-            this.listBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.listBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.listBox1.ColumnWidth = 300;
-            this.listBox1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.listBox1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.listBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(225)))), ((int)(((byte)(225)))));
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 24;
-            this.listBox1.Location = new System.Drawing.Point(12, 29);
-            this.listBox1.MultiColumn = true;
-            this.listBox1.Name = "listBox1";
-            this.listBox1.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.listBox1.Size = new System.Drawing.Size(560, 288);
-            this.listBox1.TabIndex = 6;
+            this.revertBtn.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.revertBtn.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            this.revertBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.revertBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.revertBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.revertBtn.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.revertBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
+            this.revertBtn.Location = new System.Drawing.Point(472, 404);
+            this.revertBtn.Name = "revertBtn";
+            this.revertBtn.Size = new System.Drawing.Size(140, 25);
+            this.revertBtn.TabIndex = 4;
+            this.revertBtn.Text = "Revert Changes";
+            this.revertBtn.UseVisualStyleBackColor = true;
+            this.revertBtn.Click += new System.EventHandler(this.RevertBtn_Click);
+            // 
+            // projNameLabel
+            // 
+            this.projNameLabel.AutoSize = true;
+            this.projNameLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.projNameLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(225)))), ((int)(((byte)(225)))));
+            this.projNameLabel.Location = new System.Drawing.Point(12, 9);
+            this.projNameLabel.Name = "projNameLabel";
+            this.projNameLabel.Size = new System.Drawing.Size(79, 15);
+            this.projNameLabel.TabIndex = 500;
+            this.projNameLabel.Text = "Project Name";
+            // 
+            // pathLabel
+            // 
+            this.pathLabel.AutoSize = true;
+            this.pathLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pathLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(225)))), ((int)(((byte)(225)))));
+            this.pathLabel.Location = new System.Drawing.Point(259, 9);
+            this.pathLabel.Name = "pathLabel";
+            this.pathLabel.Size = new System.Drawing.Size(31, 15);
+            this.pathLabel.TabIndex = 501;
+            this.pathLabel.Text = "Path";
+            // 
+            // projectList
+            // 
+            this.projectList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.projectList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.projectList.Font = new System.Drawing.Font("InputMono", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.projectList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(225)))), ((int)(((byte)(225)))));
+            this.projectList.FormattingEnabled = true;
+            this.projectList.ItemHeight = 16;
+            this.projectList.Location = new System.Drawing.Point(12, 27);
+            this.projectList.Name = "projectList";
+            this.projectList.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.projectList.Size = new System.Drawing.Size(600, 368);
+            this.projectList.TabIndex = 0;
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(24)))), ((int)(((byte)(24)))));
-            this.ClientSize = new System.Drawing.Size(584, 361);
-            this.Controls.Add(this.listBox1);
+            this.ClientSize = new System.Drawing.Size(624, 441);
+            this.Controls.Add(this.projectList);
+            this.Controls.Add(this.pathLabel);
+            this.Controls.Add(this.projNameLabel);
+            this.Controls.Add(this.revertBtn);
             this.Controls.Add(this.moveDownBtn);
             this.Controls.Add(this.moveUpBtn);
             this.Controls.Add(this.deleteSelBtn);
-            this.Controls.Add(this.selectAllCheckbox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(600, 400);
-            this.MinimumSize = new System.Drawing.Size(600, 400);
+            this.MaximumSize = new System.Drawing.Size(640, 480);
+            this.MinimumSize = new System.Drawing.Size(640, 480);
             this.Name = "MainWindow";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -132,11 +163,13 @@
         }
 
         #endregion
-        private System.Windows.Forms.CheckBox selectAllCheckbox;
         private System.Windows.Forms.Button deleteSelBtn;
         private System.Windows.Forms.Button moveUpBtn;
         private System.Windows.Forms.Button moveDownBtn;
-        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Button revertBtn;
+        private System.Windows.Forms.Label projNameLabel;
+        private System.Windows.Forms.Label pathLabel;
+        private System.Windows.Forms.ListBox projectList;
     }
 }
 
