@@ -135,6 +135,7 @@
             this.projectList.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.projectList.Size = new System.Drawing.Size(600, 368);
             this.projectList.TabIndex = 0;
+            this.projectList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ProjectList_KeyDown);
             // 
             // MainWindow
             // 

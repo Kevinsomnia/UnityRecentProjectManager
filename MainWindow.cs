@@ -8,10 +8,9 @@ namespace UnityRecentProjectManager {
     public partial class MainWindow : Form {
         private const string LIST_FORMATTING = "{0, -31}{1, 0}";
         private const string PATH_TO_UNITY_REG = @"Software\Unity Technologies\Unity Editor 5.x";
-        private const string TARGET_VALUE_NAME = "RecentlyUsedProjectPaths-";
+        private const string TARGET_VALUE_NAME = "RecentlyUsedProjectPaths";
 
-        private List<string> projectHashes;
-        private List<string> projectPaths;
+        private List<ProjectEntry> projects;
         private bool successfullyLoaded;
 
         public MainWindow() {
@@ -22,12 +21,48 @@ namespace UnityRecentProjectManager {
             FormClosed += OnWindowClosed;
 
             // Initialize member variables.
-            projectHashes = new List<string>(); // Store hash values assigned to project path registry values (by Unity).
-            projectPaths = new List<string>();
+            projects = new List<ProjectEntry>();
             successfullyLoaded = false;
 
             // Load the registry values that contain the locations/paths of the projects.
             LoadRecentProjectPaths();
+        }
+
+        private void LoadRecentProjectPaths() {
+            RegistryKey unityEditorKey = Registry.CurrentUser.OpenSubKey(PATH_TO_UNITY_REG);
+
+            if(unityEditorKey == null) {
+                // The subkey for Unity Editor 5.x cannot be found. Is Unity installed?
+                return;
+            }
+
+            // Clear project path list from memory.
+            projects.Clear();
+
+            // Iterate through all values that start with RecentlyUsedProjectPaths.
+            string[] valNames = unityEditorKey.GetValueNames();
+
+            for(int i = 0; i < valNames.Length; i++) {
+                if(valNames[i].StartsWith(TARGET_VALUE_NAME)) {
+                    // Retrieve entire project path (encoded as binary by Unity).
+                    byte[] fullPathBytes = (byte[])unityEditorKey.GetValue(valNames[i]);
+                    string fullPath = Encoding.UTF8.GetString(fullPathBytes);
+
+                    // Retrieve hashes.
+                    int hashStart = valNames[i].LastIndexOf('-'); // Formatted like -1_h32183271...
+                    string hash = string.Empty;
+
+                    if(hashStart > -1)
+                        hash = valNames[i].Substring(hashStart);
+
+                    ProjectEntry proj = new ProjectEntry(fullPath, hash);
+                    projects.Add(proj);
+                }
+            }
+
+            unityEditorKey.Dispose();
+            successfullyLoaded = true;
+            UpdateRecentProjectList();
         }
 
         private void OnWindowClosed(object sender, FormClosedEventArgs e) {
@@ -44,44 +79,16 @@ namespace UnityRecentProjectManager {
                 }
 
                 // Write new/current list to registry.
-                for(int i = 0; i < projectPaths.Count; i++) {
-                    string valName = TARGET_VALUE_NAME + i;
-                    string valData = projectPaths[i];
+                for(int i = 0; i < projects.Count; i++) {
+                    ProjectEntry pe = projects[i];
+                    string valName = TARGET_VALUE_NAME + pe.hash;
+                    string valData = pe.fullPath;
                     byte[] encodedPath = Encoding.UTF8.GetBytes(valData);
                     unityEditorKey.SetValue(valName, encodedPath, RegistryValueKind.Binary);
                 }
 
                 unityEditorKey.Close();
-                Console.WriteLine("Saved to registry...");
             }
-        }
-
-        private void LoadRecentProjectPaths() {
-            RegistryKey unityEditorKey = Registry.CurrentUser.OpenSubKey(PATH_TO_UNITY_REG);
-
-            if(unityEditorKey == null) {
-                // The subkey for Unity Editor 5.x cannot be found. Is Unity installed?
-                return;
-            }
-
-            // Clear project path list from memory.
-            projectPaths.Clear();
-
-            // Iterate through all values that start with RecentlyUsedProjectPaths.
-            string[] valNames = unityEditorKey.GetValueNames();
-
-            for(int i = 0; i < valNames.Length; i++) {
-                if(valNames[i].StartsWith(TARGET_VALUE_NAME)) {
-                    // Retrieve entire project path (encoded as binary by Unity).
-                    byte[] fullPathBytes = (byte[])unityEditorKey.GetValue(valNames[i]);
-                    string projectPath = Encoding.UTF8.GetString(fullPathBytes);
-                    projectPaths.Add(projectPath);
-                }
-            }
-
-            unityEditorKey.Dispose();
-            successfullyLoaded = true;
-            UpdateRecentProjectList();
         }
 
         private void UpdateRecentProjectList() {
@@ -89,8 +96,9 @@ namespace UnityRecentProjectManager {
             projectList.Items.Clear();
 
             // Add all project paths to UI list.
-            for(int i = 0; i < projectPaths.Count; i++) {
-                string fullPath = projectPaths[i];
+            for(int i = 0; i < projects.Count; i++) {
+                ProjectEntry pe = projects[i];
+                string fullPath = pe.fullPath;
 
                 // Get the last folder name in path and use it as project name.
                 int lastSlash = fullPath.LastIndexOf('/');
@@ -108,9 +116,9 @@ namespace UnityRecentProjectManager {
         }
 
         private void DeleteSelBtn_Click(object sender, EventArgs e) {
-            List<string> newPaths = new List<string>();
+            List<ProjectEntry> newProjects = new List<ProjectEntry>();
 
-            for(int i = 0; i < projectPaths.Count; i++) {
+            for(int i = 0; i < projects.Count; i++) {
                 bool delete = false;
 
                 for(int j = 0; j < projectList.SelectedIndices.Count; j++) {
@@ -124,11 +132,11 @@ namespace UnityRecentProjectManager {
 
                 if(!delete) {
                     // Retain items that were not selected.
-                    newPaths.Add(projectPaths[i]);
+                    newProjects.Add(projects[i]);
                 }
             }
 
-            projectPaths = newPaths;
+            projects = newProjects;
             UpdateRecentProjectList();
         }
 
@@ -142,9 +150,9 @@ namespace UnityRecentProjectManager {
             // Swap this and the previous element.
             int swapA = projectList.SelectedIndex;
             int swapB = projectList.SelectedIndex - 1;
-            string origPathTemp = projectPaths[swapA];
-            projectPaths[swapA] = projectPaths[swapB];
-            projectPaths[swapB] = origPathTemp;
+            string projPathTemp = projects[swapA].fullPath;
+            projects[swapA].fullPath = projects[swapB].fullPath;
+            projects[swapB].fullPath = projPathTemp;
 
             // Update UI list.
             UpdateRecentProjectList();
@@ -163,9 +171,9 @@ namespace UnityRecentProjectManager {
             // Swap this and the next element.
             int swapA = projectList.SelectedIndex;
             int swapB = projectList.SelectedIndex + 1;
-            string origPathTemp = projectPaths[swapA];
-            projectPaths[swapA] = projectPaths[swapB];
-            projectPaths[swapB] = origPathTemp;
+            string projPathTemp = projects[swapA].fullPath;
+            projects[swapA].fullPath = projects[swapB].fullPath;
+            projects[swapB].fullPath = projPathTemp;
 
             // Update UI list.
             UpdateRecentProjectList();
@@ -176,6 +184,26 @@ namespace UnityRecentProjectManager {
 
         private void RevertBtn_Click(object sender, EventArgs e) {
             LoadRecentProjectPaths();
+        }
+
+        private void ProjectList_KeyDown(object sender, KeyEventArgs e) {
+            if(e.Control && e.KeyCode == Keys.A) {
+                for(int i = 0; i < projectList.Items.Count; i++) {
+                    projectList.SetSelected(i, true);
+                }
+
+                e.SuppressKeyPress = true;
+            }
+        }
+    }
+
+    public class ProjectEntry {
+        public string fullPath { get; set; }
+        public string hash { get; private set; }
+
+        public ProjectEntry(string path, string hash) {
+            fullPath = path;
+            this.hash = hash;
         }
     }
 }
