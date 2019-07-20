@@ -24,31 +24,32 @@
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
-            this.deleteSelBtn = new System.Windows.Forms.Button();
+            this.deleteBtn = new System.Windows.Forms.Button();
             this.moveUpBtn = new System.Windows.Forms.Button();
             this.moveDownBtn = new System.Windows.Forms.Button();
             this.revertBtn = new System.Windows.Forms.Button();
             this.projNameLabel = new System.Windows.Forms.Label();
             this.pathLabel = new System.Windows.Forms.Label();
             this.projectList = new System.Windows.Forms.ListBox();
+            this.saveBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // deleteSelBtn
+            // deleteBtn
             // 
-            this.deleteSelBtn.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.deleteSelBtn.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
-            this.deleteSelBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.deleteSelBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.deleteSelBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.deleteSelBtn.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.deleteSelBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
-            this.deleteSelBtn.Location = new System.Drawing.Point(12, 404);
-            this.deleteSelBtn.Name = "deleteSelBtn";
-            this.deleteSelBtn.Size = new System.Drawing.Size(140, 25);
-            this.deleteSelBtn.TabIndex = 1;
-            this.deleteSelBtn.Text = "Delete Selected";
-            this.deleteSelBtn.UseVisualStyleBackColor = true;
-            this.deleteSelBtn.Click += new System.EventHandler(this.DeleteSelBtn_Click);
+            this.deleteBtn.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.deleteBtn.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            this.deleteBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.deleteBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.deleteBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.deleteBtn.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.deleteBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
+            this.deleteBtn.Location = new System.Drawing.Point(12, 404);
+            this.deleteBtn.Name = "deleteBtn";
+            this.deleteBtn.Size = new System.Drawing.Size(100, 25);
+            this.deleteBtn.TabIndex = 1;
+            this.deleteBtn.Text = "Delete";
+            this.deleteBtn.UseVisualStyleBackColor = true;
+            this.deleteBtn.Click += new System.EventHandler(this.DeleteBtn_Click);
             // 
             // moveUpBtn
             // 
@@ -59,7 +60,7 @@
             this.moveUpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.moveUpBtn.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.moveUpBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
-            this.moveUpBtn.Location = new System.Drawing.Point(158, 404);
+            this.moveUpBtn.Location = new System.Drawing.Point(132, 404);
             this.moveUpBtn.Name = "moveUpBtn";
             this.moveUpBtn.Size = new System.Drawing.Size(100, 25);
             this.moveUpBtn.TabIndex = 2;
@@ -76,7 +77,7 @@
             this.moveDownBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.moveDownBtn.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.moveDownBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
-            this.moveDownBtn.Location = new System.Drawing.Point(264, 404);
+            this.moveDownBtn.Location = new System.Drawing.Point(238, 404);
             this.moveDownBtn.Name = "moveDownBtn";
             this.moveDownBtn.Size = new System.Drawing.Size(100, 25);
             this.moveDownBtn.TabIndex = 3;
@@ -93,11 +94,11 @@
             this.revertBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.revertBtn.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.revertBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
-            this.revertBtn.Location = new System.Drawing.Point(472, 404);
+            this.revertBtn.Location = new System.Drawing.Point(406, 404);
             this.revertBtn.Name = "revertBtn";
-            this.revertBtn.Size = new System.Drawing.Size(140, 25);
+            this.revertBtn.Size = new System.Drawing.Size(100, 25);
             this.revertBtn.TabIndex = 4;
-            this.revertBtn.Text = "Revert Changes";
+            this.revertBtn.Text = "Revert";
             this.revertBtn.UseVisualStyleBackColor = true;
             this.revertBtn.Click += new System.EventHandler(this.RevertBtn_Click);
             // 
@@ -138,19 +139,37 @@
             this.projectList.TabIndex = 0;
             this.projectList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ProjectList_KeyDown);
             // 
+            // saveBtn
+            // 
+            this.saveBtn.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.saveBtn.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            this.saveBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.saveBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.saveBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.saveBtn.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.saveBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
+            this.saveBtn.Location = new System.Drawing.Point(512, 404);
+            this.saveBtn.Name = "saveBtn";
+            this.saveBtn.Size = new System.Drawing.Size(100, 25);
+            this.saveBtn.TabIndex = 5;
+            this.saveBtn.Text = "Save";
+            this.saveBtn.UseVisualStyleBackColor = true;
+            this.saveBtn.Click += new System.EventHandler(this.SaveBtn_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(24)))), ((int)(((byte)(24)))));
             this.ClientSize = new System.Drawing.Size(624, 441);
+            this.Controls.Add(this.saveBtn);
             this.Controls.Add(this.projectList);
             this.Controls.Add(this.pathLabel);
             this.Controls.Add(this.projNameLabel);
             this.Controls.Add(this.revertBtn);
             this.Controls.Add(this.moveDownBtn);
             this.Controls.Add(this.moveUpBtn);
-            this.Controls.Add(this.deleteSelBtn);
+            this.Controls.Add(this.deleteBtn);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -166,13 +185,14 @@
         }
 
         #endregion
-        private System.Windows.Forms.Button deleteSelBtn;
+        private System.Windows.Forms.Button deleteBtn;
         private System.Windows.Forms.Button moveUpBtn;
         private System.Windows.Forms.Button moveDownBtn;
         private System.Windows.Forms.Button revertBtn;
         private System.Windows.Forms.Label projNameLabel;
         private System.Windows.Forms.Label pathLabel;
         private System.Windows.Forms.ListBox projectList;
+        private System.Windows.Forms.Button saveBtn;
     }
 }
 

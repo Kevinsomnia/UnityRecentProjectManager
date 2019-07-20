@@ -65,7 +65,7 @@ namespace UnityRecentProjectManager {
             UpdateRecentProjectList();
         }
 
-        private void OnWindowClosed(object sender, FormClosedEventArgs e) {
+        private void SaveRecentProjectPaths() {
             if(successfullyLoaded) {
                 // Only write to registry if we successfully loaded it.
                 RegistryKey unityEditorKey = Registry.CurrentUser.OpenSubKey(PATH_TO_UNITY_REG, true);
@@ -89,6 +89,10 @@ namespace UnityRecentProjectManager {
 
                 unityEditorKey.Close();
             }
+        }
+
+        private void OnWindowClosed(object sender, FormClosedEventArgs e) {
+            SaveRecentProjectPaths();
         }
 
         private void UpdateRecentProjectList() {
@@ -115,7 +119,7 @@ namespace UnityRecentProjectManager {
             }
         }
 
-        private void DeleteSelBtn_Click(object sender, EventArgs e) {
+        private void DeleteBtn_Click(object sender, EventArgs e) {
             List<ProjectEntry> newProjects = new List<ProjectEntry>();
 
             for(int i = 0; i < projects.Count; i++) {
@@ -186,8 +190,13 @@ namespace UnityRecentProjectManager {
             LoadRecentProjectPaths();
         }
 
+        private void SaveBtn_Click(object sender, EventArgs e) {
+            SaveRecentProjectPaths();
+        }
+
         private void ProjectList_KeyDown(object sender, KeyEventArgs e) {
             if(e.Control && e.KeyCode == Keys.A) {
+                // Ctrl-A to select all.
                 for(int i = 0; i < projectList.Items.Count; i++) {
                     projectList.SetSelected(i, true);
                 }
